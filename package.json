@@ -1,11 +1,11 @@
 {
   "name": "gitgit",
   "private": true,
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "precommit": "lint-staged"
   },
   "dependencies": {
     "body-parser": "^1.18.1",
@@ -13,5 +13,14 @@
     "express": "^4.15.4",
     "lodash": "^4.17.4",
     "morgan": "^1.8.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,css,scss,json}": ["prettier --write", "git add"]
+  },
+  "repository": "https://github.com/Baransu/gitgit.git",
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "lint-staged": "^4.2.2",
+    "prettier": "^1.7.0"
   }
 }

@@ -1,33 +1,35 @@
 {
-    "manifest_version": 5,
-
-    "name": "Git Git",
-    "description": "Git Git gamification",
-    "version": "0.5",
-    "permissions": [
-        "tabs", "http://*/*", "https://*/", "activeTab", "webNavigation"
-    ],
-
-    "background" : [
-        {
-            "matches": ["http://github/*"],
-            "js": ["background.js"]
-        }
-    ],
-    "content_scripts": [
-        {
-            "matches": [ "http://github/*", "https://*/*", "file:///*/*"],
-            "css": ["style.css"],
-            "js": ["gitgit.js"],
-            "all_frames": true
-        }],
-
-    "browser_action": {
-        "default_title": "Make this page fun!",
-        "default_icon": {
-            "19": "img/sub19.png",
-            "38": "img/sub38.png",
-            "128": "img/sub128.png"
-        }
+  "manifest_version": 5,
+  "name": "Git Git",
+  "description": "Git Git gamification",
+  "version": "0.1",
+  "permissions": [
+    "tabs",
+    "http://*/*",
+    "https://*/",
+    "activeTab",
+    "webNavigation"
+  ],
+  "background": [
+    {
+      "matches": ["http://github/*"],
+      "js": ["background.bundle.js"]
     }
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://github/*", "https://*/*", "file:///*/*"],
+      "css": ["style.css"],
+      "js": ["content.bundle.js"],
+      "all_frames": true
+    }
+  ],
+  "browser_action": {
+    "default_title": "Make open source even more fun!",
+    "default_icon": {
+      "19": "assets/sub19.png",
+      "38": "assets/sub38.png",
+      "128": "assets/sub128.png"
+    }
+  }
 }
