@@ -8,9 +8,15 @@
         "tabs", "http://*/*", "https://*/", "activeTab", "webNavigation"
     ],
 
+    "background" : [
+        {
+            "matches": ["http://github/*"],
+            "js": ["background.js"]
+        }
+    ],
     "content_scripts": [
         {
-            "matches": [ "http://*/*", "https://*/*", "file:///*/*"],
+            "matches": [ "http://github/*", "https://*/*", "file:///*/*"],
             "css": ["style.css"],
             "js": ["gitgit.js"],
             "all_frames": true
