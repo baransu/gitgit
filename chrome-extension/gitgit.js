@@ -22,6 +22,7 @@ let run = function() {
   if(pageUser){
     getUser(user, (repos) => {
       level = getLevels(repos);
+      console.log(level);
       pageUser.innerHTML += "</br>" + level;
     });
   }
@@ -57,11 +58,35 @@ var groupBy = function(xs, key) {
 
 function getLevels(repos){
   langs = groupBy(repos, "language");
-  return Object.keys(langs).reduce( (acc, key) => {
-    console.log(langs);
-    console.log(key);
-    level = langs[key].reduce( (acc, {stargazers_count}) => acc + stargazers_count, 0);
-    if(level) return acc + "</br>" + key + " Level " + level;
-    else return acc;
-  }, "");
+  return Object
+    .keys(langs)
+    .map((key) => ({key: key, level: langs[key].reduce((acc, a) => acc + a.stargazers_count, 0)}))
+    .sort((a, b) => b.level - a.level)
+    .reduce((acc, {key, level}) => {
+      console.log(level);
+      if(level) return acc + "</br>" + level + " Lvl - " + getClass(key);
+      else return acc;
+    }, "");
 };
+
+function getClass(language) {
+  let c = {
+    null: "Ambassador",
+    Elixir: "Alchemist",
+    Elm: "Druid",
+    JavaScript: "Ninja",
+    CoffeeScript: "Brewer",
+    Bash: "Blacksmith",
+    C: "Tinkerer",
+    Java: "Garbage",
+    Scala: "Wizzard",
+    Erlang: "Necromancer",
+    CSS: "Bard",
+    HTML: "Architect",
+    Rust: "Scrap Constructor",
+    "C#": "Librarian",
+    Ruby: "Jeweler"
+  }[language];
+  if(c) return c + " ("+ language + ")";
+  else return language;
+}
