@@ -26,7 +26,7 @@ function run() {
   const url = window.location.href;
   //for(user in users){
   //if(url.indexOf(user) !== -1){
-  const user = window.location.href.split('/')[3];
+  const user = window.location.path.split('/')[3];
   const pageUser = document.querySelector('.p-nickname.vcard-username.d-block');
   let commentUser = document.querySelector(
     '.avatar-parent-child.timeline-comment-avatar'
