@@ -24,11 +24,6 @@ module.exports = {
         test: /\.js$/,
         loader: require.resolve('babel-loader'),
         options: {
-          babelrc: false,
-          presets: [
-            require.resolve('babel-preset-react-app'),
-            require.resolve('babel-preset-preact')
-          ],
           compact: true
         }
       },

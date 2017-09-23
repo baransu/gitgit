@@ -1,3 +1,5 @@
+import { get } from './api';
+
 function add(a, b) {
   return a + b;
 }
