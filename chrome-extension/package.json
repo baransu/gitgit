@@ -28,6 +28,7 @@
     "webpack": "^3.6.0"
   },
   "dependencies": {
+    "lodash": "^4.17.4",
     "preact": "^8.2.5"
   }
 }

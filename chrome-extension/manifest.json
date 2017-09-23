@@ -4,12 +4,12 @@
   "description": "Git Git gamification",
   "version": "0.2",
   "permissions": [
-    "tabs",
-    "http://*/*",
-    "https://*/",
-    "activeTab",
-    "webNavigation",
-    "storage"
+      "tabs",
+      "http://*/*",
+      "https://*/",
+      "activeTab",
+      "webNavigation",
+      "storage"
   ],
   "background": [
     {
