@@ -1,26 +1,27 @@
 {
-  "manifest_version": 5,
+  "manifest_version": 6,
   "name": "Git Git",
   "description": "Git Git gamification",
-  "version": "0.1",
+  "version": "0.2",
   "permissions": [
-    "tabs",
-    "http://*/*",
-    "https://*/",
-    "activeTab",
-    "webNavigation"
+      "tabs",
+      "http://*/*",
+      "https://*/",
+      "activeTab",
+      "webNavigation",
+      "storage"
   ],
   "background": [
     {
       "matches": ["http://github/*"],
-      "js": ["background.bundle.js"]
+      "js": ["build/background.bundle.js"]
     }
   ],
   "content_scripts": [
     {
       "matches": ["http://github/*", "https://*/*", "file:///*/*"],
-      "css": ["style.css"],
-      "js": ["content.bundle.js"],
+      "css": ["build/style.css"],
+      "js": ["build/content.bundle.js"],
       "all_frames": true
     }
   ],
