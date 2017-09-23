@@ -1,26 +1,7 @@
-// import { get } from './api';
+import { getUserRepos, cachedGet } from './api';
 import './style.scss';
-
-console.log('GitGit initialized');
-
-const getUser = memoize(10000, function getUser (user, f){
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", "https://api.github.com/users/" + user + "/repos", true);
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4) {
-      // JSON.parse does not evaluate the attacker's scripts.
-      var resp = JSON.parse(xhr.responseText);
-      f(resp);
-    }
-  };
-  xhr.send();
-});
-
-// const getUser = memoize(10000, function getUser(user, cb) {
-//   get(`/users/${user}/repos`)
-//     .then(res => cb(res.data))
-//     .catch(console.error);
-// });
+import _ from 'lodash';
+const { flow } = _;
 
 const groupBy = function(xs, key) {
   return xs.reduce((acc, x) => {
@@ -63,25 +44,6 @@ function getClass(language) {
   return c ? `${c} (${language})` : language;
 }
 
-
-function memoize(t, name, f){
-  return function(...args) {
-    let name = name + JSON.stringify(args);
-    chrome.storage.sync.get(name, (res) => {
-      let now = Date.now();
-      console.log(res)
-      let v = (res == {}) ? {} : JSON.parse(res);
-      if(!v || now - v.time > t) {
-        console.log("memoizing");
-        v = {time: now, value: f.apply(args)};
-        chrome.storage.sync.set({[name]: JSON.stringify(v)}, () => ({}));
-      }
-      console.log("memoized");
-      return v.value;
-    });
-  };
-}
-
 function run() {
   const url = window.location.href;
   const user = window.location.href.split('/')[3];
@@ -90,10 +52,13 @@ function run() {
     '.avatar-parent-child.timeline-comment-avatar'
   );
   if (pageUser) {
-    getUser(user, repos => {
-      const level = getLevels(repos);
-      pageUser.innerHTML += '</br>' + level;
-    });
+    getUserRepos(user)
+      .then(data => {
+        const repos = data.data;
+        console.log("REPOS" + repos.toString);
+        const level = getLevels(repos);
+        pageUser.innerHTML += '</br>' + level;
+      });
   }
   if (commentUser) {
     commentUser.innerHTML += "<div class='ribbon'></div>";

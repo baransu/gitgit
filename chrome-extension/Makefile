@@ -1,5 +1,5 @@
 all:
-	yarn && yarn build
+	yarn && yarn dev
 
 watch:
-	find src | grep -v "#.*" | entr yarn build
+	yarn dev
