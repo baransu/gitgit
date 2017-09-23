@@ -10,7 +10,8 @@ module.exports = {
   devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
   entry: {
     content: path.join(__dirname, '..', 'src', 'content.js'),
-    background: path.join(__dirname, '..', 'src', 'background.js')
+    background: path.join(__dirname, '..', 'src', 'background.js'),
+    popup: path.join(__dirname, '..', 'src', 'popup.js')
   },
   output: {
     path: path.join(__dirname, '..', 'build'),
@@ -24,7 +25,10 @@ module.exports = {
         loader: require.resolve('babel-loader'),
         options: {
           babelrc: false,
-          presets: [require.resolve('babel-preset-react-app')],
+          presets: [
+            require.resolve('babel-preset-react-app'),
+            require.resolve('babel-preset-preact')
+          ],
           compact: true
         }
       },
@@ -79,7 +83,8 @@ module.exports = {
     new CopyWebpackPlugin(
       [
         { from: 'assets', to: 'assets' },
-        { from: 'manifest.json', to: 'manifest.json' }
+        { from: 'manifest.json', to: 'manifest.json' },
+        { from: 'public', to: '' }
       ],
       {}
     )

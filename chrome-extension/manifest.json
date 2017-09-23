@@ -1,14 +1,15 @@
 {
-  "manifest_version": 5,
+  "manifest_version": 2,
   "name": "Git Git",
   "description": "Git Git gamification",
-  "version": "0.1",
+  "version": "0.2",
   "permissions": [
     "tabs",
     "http://*/*",
     "https://*/",
     "activeTab",
-    "webNavigation"
+    "webNavigation",
+    "storage"
   ],
   "background": [
     {
@@ -26,6 +27,7 @@
   ],
   "browser_action": {
     "default_title": "Make open source even more fun!",
+    "default_popup": "popup.html",
     "default_icon": {
       "19": "assets/sub19.png",
       "38": "assets/sub38.png",
