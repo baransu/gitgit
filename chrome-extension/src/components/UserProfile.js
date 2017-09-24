@@ -8,9 +8,12 @@ class UserProfile extends Component {
 
   componentDidMount() {
     const username = getUsername();
-    getUserRepos(username).then(({ data }) => {
-      console.log('REPOS', data);
-      this.setState({ loading: true, levels: getLevels(data) });
+    window.chrome.storage.sync.get('access-token', storage => {
+      const token = storage['access-token'];
+      getUserRepos(username, token).then(({ data }) => {
+        console.log('REPOS', data);
+        this.setState({ loading: true, levels: getLevels(data) });
+      });
     });
   }
 

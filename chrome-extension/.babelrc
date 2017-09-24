@@ -1,4 +1,3 @@
 {
-  "presets": ["react-app", "preact"],
-  "plugins": [["transform-react-jsx", { "pragma": "h" }]]
+  "presets": ["react-app", "preact"]
 }

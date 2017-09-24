@@ -16,7 +16,6 @@
     "babel-core": "^6.26.0",
     "babel-jest": "^21.0.2",
     "babel-loader": "^7.1.2",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-preact": "^1.1.0",
     "babel-preset-react-app": "^3.0.2",
     "copy-webpack-plugin": "^4.0.1",
