@@ -1,5 +1,7 @@
 // @flow
 
+import pathToRegexp from 'path-to-regexp';
+
 export function getUsername(): string {
   const [_a, username] = window.location.pathname.split('/');
   return username;
@@ -45,4 +47,23 @@ export function getLevels(
     }))
     .filter(a => a.level > 0)
     .sort((a, b) => b.level - a.level);
+}
+
+export function on(path: string, callback: (params: mixed) => void) {
+  let keys = [];
+  const regexp = pathToRegexp(path, keys);
+  const exec = regexp.exec(window.location.pathname);
+  if (exec) {
+    const [url, ...values] = exec;
+    const params = keys.reduce(
+      (acc, key, index) => ({
+        ...acc,
+        [key.name]: values[index]
+      }),
+      {}
+    );
+    if (typeof callback === 'function') {
+      callback(params);
+    }
+  }
 }

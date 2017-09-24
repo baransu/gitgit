@@ -1,30 +1,10 @@
 import { h, render } from 'preact';
-import pathToRegexp from 'path-to-regexp';
 
 import UserProfile from './components/UserProfile';
 import UserComment from './components/UserComment';
 import { getUserRepos, cachedGet } from './api';
-import { getUsername } from './utils';
+import { getUsername, on } from './utils';
 import './style.scss';
-
-function on(path, callback) {
-  let keys = [];
-  const regexp = pathToRegexp(path, keys);
-  const exec = regexp.exec(window.location.pathname);
-  if (exec) {
-    const [url, ...values] = exec;
-    const params = keys.reduce(
-      (acc, key, index) => ({
-        ...acc,
-        [key.name]: values[index]
-      }),
-      {}
-    );
-    if (typeof callback === 'function') {
-      callback(params);
-    }
-  }
-}
 
 function run() {
   // PROFILE PAGE
