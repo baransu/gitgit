@@ -1,5 +1,11 @@
 all:
-	yarn && yarn dev
+	yarn && yarn build
 
 watch:
-	yarn dev
+	yarn watch
+
+test:
+	yarn test
+
+flow:
+	find ./src -name "*.js" | entr yarn flow

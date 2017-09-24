@@ -3,7 +3,19 @@ import { h, render, Component } from 'preact';
 import { get } from './api';
 
 class Popup extends Component {
-  state = { token: '', error: null, saving: false, message: null };
+  state = {
+    hasToken: false,
+    token: '',
+    error: null,
+    saving: false,
+    message: null
+  };
+
+  componentDidMount() {
+    window.chrome.storage.sync.get('access-token', storage =>
+      this.setState({ hasToken: !!storage['access-token'] })
+    );
+  }
 
   handleChange = e =>
     this.setState({ error: null, message: null, token: e.target.value });
@@ -13,7 +25,7 @@ class Popup extends Component {
     this.setState({ saving: true, message: null, error: null }, () => {
       get(`/rate_limit?access_token=${token}`)
         .then(() => {
-          chrome.storage.sync.set({ 'access-token': token });
+          window.chrome.storage.sync.set({ 'access-token': token });
           this.setState({ saving: false, message: 'Saved token' });
         })
         .catch(() =>
@@ -31,6 +43,7 @@ class Popup extends Component {
         <h3>Git git gamification</h3>
         <div>
           <div>Provide your GitHub access token</div>
+          {this.state.hasToken && <div>You've already provided your token</div>}
           <div>
             <input
               placeholder="Enter your access token"
