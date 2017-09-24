@@ -28,7 +28,7 @@ export function get(path: string) {
   });
 }
 
-export function cachedGet(path, t, selector) {
+export function cachedGet(path, t, selector = a => a.data) {
   const name = `GET:${path}`;
   return new Promise((resolve, reject) => {
     window.chrome.storage.sync.get(name, res => {

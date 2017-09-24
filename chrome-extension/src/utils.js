@@ -43,5 +43,6 @@ export function getLevels(
       key: key,
       level: langs[key].reduce((acc, a) => acc + a.stargazers_count, 0)
     }))
+    .filter(a => a.level > 0)
     .sort((a, b) => b.level - a.level);
 }

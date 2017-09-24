@@ -12,7 +12,7 @@ class UserProfile extends Component {
       const token = storage['access-token'];
       getUserRepos(username, token).then(({ data }) => {
         console.log('REPOS', data);
-        this.setState({ loading: true, levels: getLevels(data) });
+        this.setState({ loading: false, levels: getLevels(data) });
       });
     });
   }
@@ -20,7 +20,7 @@ class UserProfile extends Component {
   render() {
     return (
       <div>
-        {this.state.loading && <span>Loading...</span>}
+        {this.state.loading && <span>Processing your githubiness...</span>}
         {this.state.levels.map(({ key, level }) => (
           <span>
             {level} {getClass(key)} <br />
