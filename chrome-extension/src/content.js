@@ -1,4 +1,4 @@
-import { getUserRepos, cachedGet } from './api';
+import { getUserRepos } from './api';
 import './style.scss';
 import _ from 'lodash';
 const { flow } = _;
@@ -45,29 +45,58 @@ function getClass(language) {
 }
 
 function run() {
-  const url = window.location.href;
-  const user = window.location.href.split('/')[3];
-  const pageUser = document.querySelector('.p-nickname.vcard-username.d-block');
-  let commentUser = document.querySelector(
-    '.avatar-parent-child.timeline-comment-avatar'
-  );
-  if (pageUser) {
-    getUserRepos(user)
-      .then(data => {
-        const repos = data.data;
-        console.log("REPOS" + repos.toString);
-        const level = getLevels(repos);
-        pageUser.innerHTML += '</br>' + level;
-      });
+  chrome.storage.sync.get("access-token", ls => {
+    const token = ls["access-token"];
+    const url = window.location.href;
+    const user = window.location.href.split('/')[3];
+    const pageUser = document.querySelector('.p-nickname.vcard-username.d-block');
+    let commentUser = document.querySelector(
+      '.avatar-parent-child.timeline-comment-avatar'
+    );
+    if (pageUser) {
+      getUserRepos(user, token)
+        .then(data => {
+          const repos = data.data;
+          const level = getLevels(repos);
+          pageUser.innerHTML += '</br>' + level;
+        });
+    }
+    if (commentUser) {
+      commentUser.innerHTML += "<div class='ribbon'></div>";
+    }
+  });
+}
+
+function getExpForLevel(level) {
+  return Math.pow(10, Math.floor(level/10));
+}
+function getExpTotalForLevel(level){
+  let total = 0;
+  while(level-- > 0) total += getExpForLevel(level);
+  return total;
+}
+
+function getLevel(exp) {
+  let leftExp = exp;
+  let level = 0;
+  while(++level && leftExp > 0) {
+    leftExp -= getExpForLevel(level);
   }
-  if (commentUser) {
-    commentUser.innerHTML += "<div class='ribbon'></div>";
-  }
+  return level - 1;
+}
+
+function levelPrompt(exp) {
+  const lvl = getLevel(exp);
+  const baseExp = exp - getExpTotalForLevel(lvl);
+  const toNext = getExpForLevel(lvl + 1);
+
+  return `${lvl} (${baseExp}/${toNext})`;
 }
 
 ///////////////////////////
 // ------- main -------- //
 ///////////////////////////
+
 
 document.addEventListener('pjax:end', run);
 run();

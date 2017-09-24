@@ -1,5 +1,6 @@
+import fpget from 'lodash/fp/get';
+
 const API = 'https://api.github.com';
-import get from "lodash/fp/get";
 
 function fetch(path: string, args: Object) {
   return window.fetch(`${API}${path}`, args).then(res => {
@@ -30,27 +31,39 @@ export function cachedGet(path, t, selector) {
   const promise = new Promise((resolve, reject) => {
     chrome.storage.sync.get(name, res => {
       let now = Date.now();
-      if(_.isEqual(res, {}) || now - res.time > t) {
+      if (_.isEqual(res, {}) || now - res.time > t) {
         console.log(`Memoizing ${name}`);
         get(path).then(res => {
-          const v = {time: now, value: res};
-          chrome.storage.sync.set({[name]: v});
+          const v = { time: now, value: selector(res) };
+          console.log(v);
+          chrome.storage.sync.set({ [name]: v });
           resolve(v.value);
         });
-      }
-      else resolve(res[name].value);
+      } else resolve(res[name].value);
     });
   });
   return promise;
 }
 
+export function getUserRepos(user, token, page = 1) {
+  const selector = ({ data }) => ({
+    data: data.map(({ stargazers_count, language }) => ({
+      stargazers_count,
+      language
+    }))
+  });
 
-export function getUserRepos(user, page = 1) {
-  return cachedGet(`/users/${user}/repos?type=all&page=${page}&access_token=3922ca8fdfda50f6ca6814f6f0db5fffc479f871`, 10000)
+  const tokenArg = token ? `&access_token=${token}` : '';
+  return cachedGet(
+    `/users/${user}/repos?per_page=100&type=all&page=${page}${tokenArg}`,
+    10000,
+    selector
+  )
     .then(res => {
-      if(res.data.length >= 30){
-          return getUserRepos(user, page + 1)
-          .then(nextRes => ({data: [...res.data, ...nextRes.data]}));
+      if (res.data.length >= 100) {
+        return getUserRepos(user, token, page + 1).then(nextRes => ({
+          data: [...res.data, ...nextRes.data]
+        }));
       } else return Promise.resolve(res);
     })
     .catch(console.error);
@@ -60,4 +73,4 @@ export function getOrgs(user) {
   cachedGet(`/users/${user}/repos`, 10000)
     .then(res => res.data)
     .catch(console.error);
-};
+}
