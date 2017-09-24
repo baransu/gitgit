@@ -1,7 +1,9 @@
 import { h, render } from 'preact';
 
 import UserProfile from './components/UserProfile';
+import UserComment from './components/UserComment';
 import { getUserRepos, cachedGet } from './api';
+import { getUsername } from './utils';
 import './style.scss';
 
 function run() {
@@ -18,7 +20,10 @@ function run() {
     '.avatar-parent-child.timeline-comment-avatar'
   );
   if (commentUser) {
-    commentUser.innerHTML += "<div class='ribbon'></div>";
+    const [img] = commentUser.getElementsByTagName('img');
+    commentUser.innerHTML = '';
+    render(<UserComment avatar={img.src} />, commentUser);
+    // commentUser.innerHTML += "<div class='ribbon'></div>";
   }
 }
 
