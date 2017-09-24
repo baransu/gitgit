@@ -7,12 +7,21 @@ class UserProfile extends Component {
   state = { levels: [], loading: true };
 
   componentDidMount() {
-    const username = getUsername();
+    const { delay } = this.props;
+    const { user } = this.props.params;
+    const start = Date.now();
+
     window.chrome.storage.sync.get('access-token', storage => {
       const token = storage['access-token'];
-      getUserRepos(username, token).then(({ data }) => {
+      getUserRepos(user, token).then(({ data }) => {
         console.log('REPOS', data);
-        this.setState({ loading: false, levels: getLevels(data) });
+        const diff = Date.now() - start;
+        if (diff < delay) {
+          setTimeout(
+            () => this.setState({ loading: false, levels: getLevels(data) }),
+            delay - diff
+          );
+        }
       });
     });
   }

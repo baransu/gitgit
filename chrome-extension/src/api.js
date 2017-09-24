@@ -1,4 +1,4 @@
-import isEmpty from 'lodash/fp/isEmpty';
+import isEmpty from 'lodash/isEmpty';
 
 const API = 'https://api.github.com';
 const PER_PAGE = 100;

@@ -1,5 +1,5 @@
 import { h, render, Component } from 'preact';
-import range from 'lodash/fp/range';
+import range from 'lodash/range';
 
 import { get } from './api';
 
