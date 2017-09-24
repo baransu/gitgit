@@ -1,4 +1,5 @@
 import { h, render, Component } from 'preact';
+import range from 'lodash/fp/range';
 
 import { get } from './api';
 
@@ -31,7 +32,7 @@ class Popup extends Component {
         .catch(() =>
           this.setState({
             saving: false,
-            error: `Your access token may be inavlid`
+            error: `Entered access token may be invalid`
           })
         );
     });
@@ -39,21 +40,41 @@ class Popup extends Component {
 
   render() {
     return (
-      <div>
-        <h3>Git git gamification</h3>
+      <div style={{ padding: '10px' }}>
+        <h3 style={{ textAlign: 'center' }}>Git git gamification</h3>
         <div>
-          <div>Provide your GitHub access token</div>
-          {this.state.hasToken && <div>You've already provided your token</div>}
+          <p style={{ textAlign: 'center' }}>
+            Provide your GitHub access token
+          </p>
+          {this.state.hasToken && (
+            <p style={{ textAlign: 'center', color: 'green' }}>
+              You've already provided your token
+            </p>
+          )}
           <div>
             <input
-              placeholder="Enter your access token"
+              style={{ width: 'calc(100% - 20px)', padding: '5px' }}
+              placeholder={
+                this.state.hasToken
+                  ? 'Enter new access token'
+                  : 'Enter your access token'
+              }
               value={this.state.token}
               onChange={this.handleChange}
             />
           </div>
-          <button onClick={this.handleSave}>
-            {this.state.saving ? 'Saving...' : 'Save your token'}
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <button
+              onClick={this.handleSave}
+              style={{
+                padding: '5px 20px',
+                textAlign: 'center',
+                margin: '10px auto 5px'
+              }}
+            >
+              {this.state.saving ? 'Saving...' : 'Save your token'}
+            </button>
+          </div>
           {this.state.error && (
             <div style={{ color: 'red', textAlign: 'center' }}>
               {this.state.error}
